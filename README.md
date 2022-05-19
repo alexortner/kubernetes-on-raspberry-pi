@@ -3,6 +3,8 @@
 Tutorial on how to setup a lightweight Kubernetes Clusters on Raspberry Pi and code examples of containerized applications
 
 ## Setup
-Setup of the Raspberry Pi and the k3s Cluster
+Instructions on how to setup of the Raspberry Pi and the k3s Cluster
 
+## Apps
+Several example applications to demonstrate the edge use case
 
