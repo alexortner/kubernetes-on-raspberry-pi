@@ -148,7 +148,7 @@ kubectl config use-context k3s
 kubectl get nodes
 ```
 
-## Add alias and autocompletion
+## Add alias and autocomplete
 This is just to be faster using `kubectl` 
 
 ```
