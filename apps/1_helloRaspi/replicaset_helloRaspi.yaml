@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: helloraspi
+spec:
+  selector:
+    matchLabels:
+      app: helloraspi # has to match .spec.template.metadata.labels
+  replicas: 4 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: helloraspi # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: helloraspi
+          args:
+            - /bin/sh
+            - -c
+            - 'while true; do echo $(date)": Hello Raspi"; sleep 2; done'
+          image: busybox

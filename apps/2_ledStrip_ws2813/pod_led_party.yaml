@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: led-party
+  name: led-party
+spec:
+  nodeSelector:
+    device: knode3
+  containers:
+    - image: tingelbuxe/k3s-meetup:ws2813-party
+      imagePullPolicy: Always
+      name: led-party
+      securityContext:
+        privileged: true

@@ -1,0 +1,14 @@
+FROM python
+
+RUN apt-get update && apt-get install dumb-init -y
+
+RUN pip install rpi-ws281x RPi.GPIO
+
+COPY LEDStrip_ws2813_party.py ./
+
+# use the program dumb-init to rewrite pod terminaton to ctrl-c signal to shutdown led array again
+# https://tasdikrahman.me/2019/04/24/handling-singals-for-applications-in-kubernetes-docker/
+# https://github.com/Yelp/dumb-init
+ENTRYPOINT ["dumb-init", "--rewrite", "15:2", "--"]
+
+CMD ["python","./LEDStrip_ws2813_party.py","-c"]

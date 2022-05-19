@@ -1,0 +1,8 @@
+FROM python
+
+#RUN apt-get install vcgencmd -y
+RUN pip install psutil pyembedded paho-mqtt
+
+COPY raspi_monitor.py ./
+
+CMD ["python","./raspi_monitor.py"]
