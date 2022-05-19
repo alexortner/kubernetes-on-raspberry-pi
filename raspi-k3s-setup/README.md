@@ -91,3 +91,61 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 K101568b95ffbf1ddc0dfdsad1d87eb702eb04fce3376204be44d5eded02831a36f::server:83684b530e6562f86b84d5d5bf4a2eab
 ```
 
+
+Now ssh into each worker node and install the k3s agent with the following commands.
+```
+# on knodesX
+curl -sfL https://get.k3s.io | K3S_URL=https://<kmaster_IP>:6443 K3S_TOKEN=<token_from_above> sh -
+```
+This two environment variables directly start the k3s agent and registers the node on the master. Now you have again to add the `cgroup` in */boot/cmdline.txt* as show above. 
+
+After reboot you can ssh into your master node and check if the nodes where registered correctly (can take a couple of minutes) via
+
+```
+sudo k3s kubectl get nodes
+```
+should look like this
+![image](https://user-images.githubusercontent.com/16557412/169335337-fd7090a5-eecc-49f9-b791-897f3e8614be.png)
+
+## Configure kubectl on client
+I assume that you have a working kubectl setup on your local computer from where you want to access the cluster. If not you can for example install docker desktop with minicube and you will have kubectl available
+The kube config file can be found on the master node
+
+```
+# on kmaster
+sudo cat /etc/ranlcher/k3s/k3s.yaml
+```
+Copy the content and add it to your kube config file that can typically be found in the home folder `~/.kube/config`
+Here it is important to replace the localhost IP *127.0.0.1* of the server with the actual IP address of the master node
+the cube config could look like this
+
+```
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0t....LS0K
+    server: https://<MASTER IP>:6443
+    name: k3s-cluster
+contexts:
+- context:
+    cluster: k3s-cluster
+    user: k3s-admin
+    name: k3s
+current-context: k3s
+kind: Config
+preferences: {}
+users:
+- name: k3s-admin
+  user:
+    client-certificate-data: LS0tL....LS0K
+    client-key-data: LS0tLS...LQo=
+```
+
+now switch to the context and test if it works and you can see the nodes as above
+
+```
+kubectl config use-context k3s
+kubectl get nodes
+```
+
+
