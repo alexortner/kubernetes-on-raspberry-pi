@@ -24,3 +24,41 @@ After flashing the SD cards for all the Raspberry Pi. Start up and check if you 
 ping kmaster.local
 ping knode1.local
 ```
+
+If you can't reach the Raspberry Pi like this you have to find out the ip addresses by logging into your router and searching registered devices with the hostnames.
+
+---
+
+# Setup k3s Kubernetes Cluster
+The lightweight Kubernetes distribution k3s is a free small size Kubernetes Version dedicated for Edge devices and ARM architectures developed and maintained from [Rancher](https://medium.com/r/?url=https%3A%2F%2Francher.com%2Fdocs%2Fk3s%2Flatest%2Fen%2F).
+ 
+## Architecture
+A server node is defined as a Raspberry Pi running the `k3s server` command. The worker node are defined as Raspberry Pi running the `k3s agent` command. The agents are registered on the server node and the cluster can be accessed via kubectl and the master node.
+![image](https://user-images.githubusercontent.com/16557412/169331443-7579d5f4-f476-4e2e-bcef-0541a01b213c.png)
+
+Further details about the architectures and the possibilities for high availability configurations can be found in the [official documentation](https://medium.com/r/?url=https%3A%2F%2Francher.com%2Fdocs%2Fk3s%2Flatest%2Fen%2Farchitecture%2F).
+
+## Install k3s server on master node
+First ssh into the first Raspberry Pi where you want to install the `k3s server` using the hostname or IP. Authenticated via password. If you did not change it the standard password is `raspberry`
+
+```
+# connect via your hostname
+ssh pi@kmaster.local  
+# or the ip address
+ssh pi@192.168.1.123
+```
+Second install k3s with the install script
+```
+curl -sfL https://get.k3s.io | sh -
+```
+
+Typically the installation now throws a failure message that the `cgroup` is not correctly setup.
+```
+[INFO] Failed to find memory cgroup, you may need to add "cgroup_memory=1 cgroup_enable=memory" to your linux cmdline (/boot/cmdline.txt on a Raspberry Pi)
+```
+Just do exactly what the message says. Open the file */boot/cmdline.txt* and **append** the mentioned string at the end of the line. It is important that there is **no line break added.**
+
+
+```
+
+
