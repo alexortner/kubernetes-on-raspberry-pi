@@ -11,3 +11,16 @@ Next select the SD card to write on and then the configuration wheel to setup he
 
 ![image](https://user-images.githubusercontent.com/16557412/169328551-9b2340a3-f322-40c2-ace4-f2017d60c0aa.png)  
 Here configure the wifi, activate ssh with password authentication and enter meaningful hostname. Like kmaster or controlplane for the master node and knode1 or worker1 for the second kubernetes node and so on.
+
+![image](https://user-images.githubusercontent.com/16557412/169330201-afd69710-2635-4e3d-9676-082e8c6358e4.png)  
+
+![image](https://user-images.githubusercontent.com/16557412/169330252-13f479ef-5e4d-4d6c-879f-22a9035ad675.png)  
+
+In my setup I used two RasPi 3 and two RasPi 4. The master is running on a RasPi 4.  
+![image](https://user-images.githubusercontent.com/16557412/169330375-30d5b94c-3a85-477c-af91-6e1658e9d6b0.png)
+
+After flashing the SD cards for all the Raspberry Pi. Start up and check if you can find them in your network. Typically you can reach the Raspberry Pi via the hostname set during setup. Like in a personal wifi network via
+```
+ping kmaster.local
+ping knode1.local
+```
