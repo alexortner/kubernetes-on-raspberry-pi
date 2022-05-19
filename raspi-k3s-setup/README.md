@@ -60,5 +60,34 @@ Just do exactly what the message says. Open the file */boot/cmdline.txt* and **a
 
 
 ```
+sudo nano /boot/cmdline.txt
+# and the following at the end of the line.
+# IMPORTANT everything in ONE line, NO line break)
+cgroup_memory=1 cgroup_enable=memory
+# new line should look like the following 
+# DO NOT COPY THIS LINE, it will be different on your Raspi
+console=serial0,115200 console=tty1 root=PARTUUID=<UNIQUE_RASPI_ID> rootfstype=ext4 fsck.repair=yes rootwait cgroup_memory=1 cgroup_enable=memory
+# exit nano via 
+str+x and y + enter
+```
+In order to make the change effective reboot the system
+```
+sudo reboot
+```
+Finally you can check if Kubernetes works and the master node is available
+```
+sudo k3s kubectl get nodes
+```
+## Install k3s agents on worker nodes
+In order to install the k3s agents on the other Raspberries we need first to get the IP address and the access token from the master node. Run the following commands on the master node.
 
+```
+# on kmaster
+# show IP
+hostname -I | awk '{print $1}'
+
+# get token
+sudo cat /var/lib/rancher/k3s/server/node-token
+K101568b95ffbf1ddc0dfdsad1d87eb702eb04fce3376204be44d5eded02831a36f::server:83684b530e6562f86b84d5d5bf4a2eab
+```
 
