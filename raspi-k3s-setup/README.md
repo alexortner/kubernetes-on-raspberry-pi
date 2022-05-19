@@ -104,7 +104,7 @@ After reboot you can ssh into your master node and check if the nodes where regi
 ```
 sudo k3s kubectl get nodes
 ```
-should look like this
+should look like this  
 ![image](https://user-images.githubusercontent.com/16557412/169335337-fd7090a5-eecc-49f9-b791-897f3e8614be.png)
 
 ## Configure kubectl on client
@@ -148,4 +148,14 @@ kubectl config use-context k3s
 kubectl get nodes
 ```
 
+## Add alias and autocompletion
+This is just to be faster using `kubectl` 
 
+```
+source <(kubectl completion bash) # setup autocomplete in bash into the current shell, bash-completion package should be installed first.
+echo "source <(kubectl completion bash)" >> ~/.bashrc # add autocomplete permanently to your bash shell.
+
+alias k=kubectl
+complete -F __start_kubectl k
+```
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
