@@ -1,5 +1,16 @@
 # Setup a MQTT Broker
 
+## Install Mosquitto via Helm
+
+prerequisit is a workin Helm installation
+Install Mosquitto MQTT Broker via
+
+```
+helm install mosquitto k8s-at-home/mosquitto
+```
+
+but this default helm chart does not have
+
 ## Test on Mac
 
 install Mosquitto via brew

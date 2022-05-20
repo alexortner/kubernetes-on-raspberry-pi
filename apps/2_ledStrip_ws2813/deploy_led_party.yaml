@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: doubleblinker
+spec:
+  selector:
+    matchLabels:
+      app: doubleblinker # has to match .spec.template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: doubleblinker # has to match .spec.selector.matchLabels
+    spec:
+      nodeSelector:
+        device: knode3
+      containers:
+        - image: tingelbuxe/k3s-meetup:ws2813-party
+          imagePullPolicy: Always
+          name: led-party
+          securityContext:
+            privileged: true

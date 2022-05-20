@@ -7,7 +7,6 @@ spec:
   selector:
     matchLabels:
       app: raspi-monitor # has to match .spec.template.metadata.labels
-  replicas: 4 # by default is 1
   template:
     metadata:
       labels:
