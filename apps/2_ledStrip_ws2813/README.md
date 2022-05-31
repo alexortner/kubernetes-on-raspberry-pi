@@ -91,6 +91,12 @@ spec:
       securityContext:
         privileged: true
 ```
+start the LED strip by creating the pod and stop by deleting the pod again
+```
+kubectl create -f pod_led_party.yaml
+
+kubectl delete -f pod_led_party.yaml
+```
 
 ![RaspiCluster](https://user-images.githubusercontent.com/16557412/171164721-91a13c3d-853e-4e84-94f0-c042e7354755.jpg)
 
