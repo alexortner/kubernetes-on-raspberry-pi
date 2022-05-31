@@ -2,8 +2,8 @@
 
 ## LED Strip specs
 
-We use a ws2813 strip used which uses two signal cabels and is quit bad documented for a raspbery pi
-It also works the documentation for the ws2815 strip but not for ws2811 or ws2812b
+We use a ws2813 strip used which uses two signal cabels and is quit bad documented for a Raspbery Pi
+It also works the documentation for the ws2815 strip but not the one for ws2811 or ws2812b
 We us only 10 LEDs which allows us to power them directly from the Raspberry Pi pins, longer strips would need an external power device
 
 ## Wiring
@@ -21,16 +21,10 @@ The Strip has 4 contacts marked as
 - DI --> GPIO 18
 - 5V --Y one of the 5V pins
 
-## Systen Options
+## Build docker image
 
-Depending on the use case one have to activate some hardware options on the Raspberry Pi.
-
-## Build docker image for arm64
-
-Depending on the system you are using you have either to use a crossbuilder or install Docker on a Raspberry Pi and build there.
-If you are a user of a new Mac Book with M1 arm64 chip you are lucky and can build directly local
-
-The Docker images are very basic. We just install a libary to grace fully shotdown the Python app, some hardware driver for Python and copy in the Pythin code
+The Docker images are very basic. 
+We just install a libary to grace fully shotdown the Python app, some hardware driver for Python and copy in the Python code to switch the LED on and off.
 
 ```
 FROM python
@@ -56,17 +50,23 @@ Build and push the image via
 docker login <user and repo>
 
 # build the image
-docker build -t tingelbuxe/k3s-meetup:ws2813-blue -f Dockerfile.party .
+docker build -t <repo>:ws2813-party -f Dockerfile.party .
 
 # push the image
-docker push tingelbuxe/k3s-meetup:ws2813-blue
+docker push <repo>:ws2813-party
 ```
 
 ## Create a Pod yaml with privileged container
 
-In order to execute something on the node hardware we need to allow the container to access the hardware. This is typically not allowed. A quick and dirty way (BUT ABSOLUTELY NOT RECOMENDED for anything beside of experiments. !NOT FOR PRODUCTION) is to grant the container `privileged` root rights.
-Second we need to force the Pod only to run on the node where the hardware is connected
+In order to access hardware of a node, the Raspberry Pi where we connected the LED, we need to allow the container to access the hardware. This is typically not allowed for containers.  
+A quick and dirty way (BUT ABSOLUTELY NOT RECOMENDED for anything beside of experiments. !!NOT FOR PRODUCTION) is to grant the container `privileged` root rights.
+Second we need to force the Pod to run only on the node where the hardware is connected
 The simplest approach is to use a nodeSelector via label.
+For that first label the node
+```
+kubectl label node <node-name-where-LED-strip-is-connected> device=led-node
+```
+And then use this label in the node selector of the Pod
 
 ```
 apiVersion: v1
@@ -77,11 +77,12 @@ metadata:
   name: led-blue
 spec:
   nodeSelector:
-    device: kmaster
+    device: led-node
   containers:
-    - image: tingelbuxe/k3s-meetup:ws2813-blue
+    - image: <repo>:ws2813-party
       imagePullPolicy: Always
-      name: led-blue
+      name: led-party
+      # give container root access to underlying hardware
       securityContext:
         privileged: true
 ```
