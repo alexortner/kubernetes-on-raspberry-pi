@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: doubleblinker
+  name: led-on-two-devices
 spec:
   selector:
     matchLabels:
@@ -12,10 +12,12 @@ spec:
         app: doubleblinker # has to match .spec.selector.matchLabels
     spec:
       nodeSelector:
-        device: knode3
+        device: doubleblinker
       containers:
         - image: tingelbuxe/k3s-meetup:ws2813-party
           imagePullPolicy: Always
           name: led-party
           securityContext:
             privileged: true
+
+# label all nodes where a LED strip is attached with kubectl label node <nodename> device=doubleblinker
