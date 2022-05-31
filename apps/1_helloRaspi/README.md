@@ -62,23 +62,22 @@ spec:
     name: helloraspi
 ```
 
-## Replicaset that runs one pod on each node
+## Daemonset that runs one pod on each node
 
-a replicaset takes care that the same aplication runs on all nodes at least once
+a daemonset takes care that the same pod runs on all nodes at least once
 Use case: Basic Sensors should always monitor the edge device (eg. temperatur)
 
 First we create a simple replica set that runs helloRaspi on each node
 
 ```
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: DaemonSet
 metadata:
   name: helloraspi
 spec:
   selector:
     matchLabels:
       app: helloraspi # has to match .spec.template.metadata.labels
-  replicas: 4 # by default is 1
   template:
     metadata:
       labels:
