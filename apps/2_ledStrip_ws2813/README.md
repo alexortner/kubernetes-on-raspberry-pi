@@ -21,6 +21,11 @@ The Strip has 4 contacts marked as
 - DI --> GPIO 18
 - 5V --Y one of the 5V pins
 
+For reference an image of the GPIO numbers, names and positions
+
+![Raspberry-Pi-Model-B-Rev -2-GPIO-Belegung](https://user-images.githubusercontent.com/16557412/171164560-3d40e7ea-1208-4383-a576-e93cf2dd80bd.png)
+
+
 ## Build docker image
 
 The Docker images are very basic. 
@@ -86,3 +91,6 @@ spec:
       securityContext:
         privileged: true
 ```
+
+![RaspiCluster](https://user-images.githubusercontent.com/16557412/171164721-91a13c3d-853e-4e84-94f0-c042e7354755.jpg)
+
