@@ -13,8 +13,9 @@ The Strip has 4 contacts marked as
 - GND
 - BI
 - DI
-- 5V
-  The are wired to the following GPIO pins from the Raspbery Pi
+- 5V 
+
+ They are wired to the following GPIO pins from the Raspbery Pi  
 - GND --> one of the GND pins
 - BI --> GPIO 10
 - DI --> GPIO 18
